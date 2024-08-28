@@ -22,7 +22,6 @@ export const getWishlistByUserId = async (
 ): Promise<Wishlist[]> => {
   const db = await getDb();
 
-  console.log(userId);
   const wishlist = (await db
     .collection(COLLECTION_WISHLIST)
     .find({ userId: userId })

@@ -1,25 +1,41 @@
-import React from "react";
-import { ItemType } from "../types/dataTypes";
-import { BreadCrumbComponent } from "@/components/BreadCrumb";
+"use client";
 
+import React from "react";
+import { useRouter } from "next/router";
+import { ItemType } from "../../types/dataTypes";
+import { BreadCrumbComponent } from "@/components/BreadCrumb";
 import { PaginationComponent } from "@/components/Pagination";
+import Search from "@/components/Search";
 
 const Page = async () => {
+  const router = useRouter();
+  const { query } = router;
+  const currentPage = parseInt(query.page as string) || 1; // Default ke halaman 1 jika tidak ada
+
+  // Ambil data produk dari API
   const res = await fetch("http://localhost:3000/api/product");
   const { data } = await res.json();
 
-  const limitedData = data.slice(0, 6);
+  // Tentukan jumlah item per halaman
+  const itemsPerPage = 6;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Potong data sesuai halaman
+  const paginatedData = data.slice(startIndex, endIndex);
+
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 ">
-        <div className=" mt-24 justify-around">
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <div className="mt-24 flex justify-between">
           <BreadCrumbComponent />
+          <Search />
         </div>
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {limitedData.map((item: ItemType) => (
+          {paginatedData.map((item: ItemType) => (
             <div
               key={item._id}
-              className="group  bg-white border rounded-md overflow-hidden shadow-sm"
+              className="group bg-white border rounded-md overflow-hidden shadow-sm"
             >
               <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 lg:aspect-none">
                 <img

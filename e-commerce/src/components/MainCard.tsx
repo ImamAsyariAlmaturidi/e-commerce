@@ -11,15 +11,6 @@ const MainCard = ({ data }: { data: ItemType[] }) => {
       {limitedData.map((item) => (
         <div key={item._id} className="mb-4 p-4 border rounded-lg shadow-sm">
           <img
-            onClick={() => {
-              toast("Event has been created", {
-                description: "Sunday, December 03, 2023 at 9:00 AM",
-                action: {
-                  label: "Undo",
-                  onClick: () => alert("Undo"),
-                },
-              });
-            }}
             width={500}
             className="rounded-xl cursor-pointer"
             src="https://cdn.bndla.com/12674/i/c69ae9f786b00edbee72c7cf069fd82c.jpg?Look-1858"

@@ -2,7 +2,6 @@ import { Db, ObjectId } from "mongodb";
 import { getMongoClientInstance } from "../config/mongo";
 import { hashText } from "../../utils/bcrypt";
 
-// Mendefinisikan type dari UserModel
 export type UserModel = {
   _id: ObjectId;
   firstName: string;
@@ -13,14 +12,11 @@ export type UserModel = {
   phoneNumber: string;
 };
 
-// Mendefinisikan type dari UserModelCreateInput yang tidak menggunakan _id
 export type UserModelCreateInput = Omit<UserModel, "_id">;
 
-// constant value
 const DATABASE_NAME = process.env.DATABASE_NAME || "catharsis_db";
 const COLLECTION_USER = "users";
 
-// model crud
 export const getDb = async () => {
   const client = await getMongoClientInstance();
   const db: Db = client.db(DATABASE_NAME);
@@ -48,4 +44,12 @@ export const createUser = async (user: UserModelCreateInput) => {
   const result = await db.collection(COLLECTION_USER).insertOne(modifiedUser);
 
   return result;
+};
+export const getUserByEmail = async (email: string) => {
+  const db = await getDb();
+  const user = (await db
+    .collection(COLLECTION_USER)
+    .findOne({ email: email })) as UserModel;
+
+  return user;
 };

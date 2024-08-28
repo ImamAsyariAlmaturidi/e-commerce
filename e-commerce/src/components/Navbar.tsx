@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/menubar";
 import Link from "next/link";
 import { AvatarComponent } from "./Avatar";
+import { MenubarTrigger } from "@radix-ui/react-menubar";
+import { useEffect } from "react";
 export function NavbarComponent() {
   return (
     <div className="fixed w-full ">
@@ -45,12 +47,13 @@ export function NavbarComponent() {
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <span className="cursor-pointer transition-all hover:text-orange-600 ">
+          <MenubarTrigger className="cursor-pointer transition-all ">
             <AvatarComponent />
-          </span>
+          </MenubarTrigger>
           <MenubarContent>
             <MenubarRadioGroup value="benoit">
               <MenubarRadioItem value="andy">Wishlist</MenubarRadioItem>
+              {}
               <MenubarRadioItem value="andy">Logout</MenubarRadioItem>
             </MenubarRadioGroup>
           </MenubarContent>
