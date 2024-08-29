@@ -38,14 +38,21 @@ const Page = () => {
         }),
       });
 
-      if (!res.ok) {
-        throw new Error("Registration failed");
+      const message = await res.json();
+
+      if (message.statusCode === 400) {
+        toast(
+          `email or username already using, please choice another email or username `,
+          {
+            description: "error",
+          }
+        );
+      } else {
+        toast("success registration account", {
+          description: "Yey",
+        });
+        return router.push("/login");
       }
-      setSuccess("Registration successful!");
-      toast("success registration account", {
-        description: "Yey",
-      });
-      router.push("/login");
     } catch (error: unknown) {
       console.log(error);
     }

@@ -1,6 +1,11 @@
 "use server";
 import { NextRequest, NextResponse } from "next/server";
-import { createUser, getUser } from "@/db/models/User";
+import {
+  createUser,
+  getUser,
+  getUserByEmail,
+  getUserByUsername,
+} from "@/db/models/User";
 import { z } from "zod";
 const userInputSchema = z.object({
   firstName: z.string({
@@ -15,13 +20,9 @@ const userInputSchema = z.object({
   email: z.string().email({
     message: "must be email format",
   }),
-  password: z
-    .string({
-      message: "password cannot be empty",
-    })
-    .length(5, {
-      message: "length password atleast 5 character",
-    }),
+  password: z.string({
+    message: "password cannot be empty",
+  }),
   phoneNumber: z.string({
     message: "phoneNumber cannot be empty",
   }),
@@ -65,15 +66,29 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
+
     const parsedData = userInputSchema.safeParse(data);
     if (!parsedData.success) {
       throw parsedData.error;
     }
-    const result = await createUser(data);
-    return NextResponse.json<MyResponse<typeof result>>({
-      statusCode: 201,
-      data: result,
-    });
+
+    const existingEmail = await getUserByEmail(parsedData.data.email);
+    const existingUsername = await getUserByUsername(parsedData.data.username);
+    if (existingEmail) {
+      return NextResponse.json<MyResponse<never>>({
+        statusCode: 400,
+      });
+    } else if (existingUsername) {
+      return NextResponse.json<MyResponse<never>>({
+        statusCode: 400,
+      });
+    } else {
+      const result = await createUser(parsedData.data);
+      return NextResponse.json<MyResponse<typeof result>>({
+        statusCode: 201,
+        data: result,
+      });
+    }
   } catch (error) {
     return NextResponse.json<MyResponse<never>>({
       statusCode: 400,
