@@ -16,6 +16,11 @@ type ProductModel = {
   images: string[];
 };
 
+type responseType = {
+  page: number;
+  currentPage: number;
+  totalPage: number;
+};
 type productInputType = Omit<ProductModel, "_id">;
 type getProductByIdInputType = Pick<ProductModel, "_id">;
 

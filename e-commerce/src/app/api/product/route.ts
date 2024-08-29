@@ -36,7 +36,11 @@ type MyResponse<T> = {
   data?: T;
   error?: string;
 };
-export async function GET() {
+export async function GET(request: NextRequest) {
+  console.log("INSIDE GET /api/users");
+  console.log("x-user-id", request.headers.get("x-user-id"));
+  console.log("x-user-email", request.headers.get("x-user-email"));
+  console.log("x-custom-value", request.headers.get("x-custom-value"));
   try {
     const products = await getProducts();
     return NextResponse.json<MyResponse<unknown>>(
@@ -45,7 +49,7 @@ export async function GET() {
         data: products,
       },
       {
-        status: 201,
+        status: 200,
       }
     );
   } catch (error) {
@@ -60,7 +64,6 @@ export async function GET() {
     );
   }
 }
-
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();

@@ -1,16 +1,43 @@
 import React from "react";
 import { ItemType } from "../types/dataTypes";
 import { BreadCrumbComponent } from "@/components/BreadCrumb";
-
 import { PaginationComponent } from "@/components/Pagination";
-
+import InfiniteScroll from "react-infinite-scroll-component";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import AddWishlist from "@/components/AddWishlist";
 const Page = async () => {
-  const res = await fetch("http://localhost:3000/api/product");
+  const res = await fetch("http://localhost:3000/api/product", {
+    method: "GET",
+  });
+
   const { data } = await res.json();
 
   const limitedData = data.slice(0, 6);
   return (
     <div className="bg-white">
+      {/* <InfiniteScroll
+        dataLength={limitedData.length}
+        next={fetchData}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+        refreshFunction={limitedData.refresh}
+        pullDownToRefresh
+        pullDownToRefreshThreshold={50}
+        pullDownToRefreshContent={
+          <h3 style={{ textAlign: "center" }}>&#8595; Pull down to refresh</h3>
+        }
+        releaseToRefreshContent={
+          <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
+        }
+      >
+        {limitedData}
+      </InfiniteScroll> */}
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 ">
         <div className=" mt-24 justify-around">
           <BreadCrumbComponent />
@@ -35,9 +62,12 @@ const Page = async () => {
                   <a href="#">{item.name}</a>
                 </h3>
                 <p className="mt-1 text-sm text-gray-500">{item.description}</p>
-                <p className="mt-2 text-sm font-medium text-gray-900">
-                  ${item.price}
-                </p>
+                <div className="flex justify-between items-center">
+                  <p className="mt- text-sm font-medium text-gray-900">
+                    ${item.price}
+                  </p>
+                  <AddWishlist name={item.name} price={item.price} />
+                </div>
               </div>
             </div>
           ))}

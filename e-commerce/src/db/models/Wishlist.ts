@@ -18,13 +18,23 @@ type Wishlist = {
 
 type WishlistInputType = Omit<Wishlist, "_id">;
 export const getWishlistByUserId = async (
-  userId: ObjectId
+  userId: string
 ): Promise<Wishlist[]> => {
+  const agg = [
+    {
+      $lookup: {
+        from: "products",
+        localField: "productId",
+        foreignField: "_id",
+        as: "products",
+      },
+    },
+  ];
   const db = await getDb();
 
   const wishlist = (await db
     .collection(COLLECTION_WISHLIST)
-    .find({ userId: userId })
+    .aggregate(agg)
     .toArray()) as Wishlist[];
 
   return wishlist;

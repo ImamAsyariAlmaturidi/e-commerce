@@ -1,3 +1,4 @@
+"use client";
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -15,8 +16,10 @@ import {
 import Link from "next/link";
 import { AvatarComponent } from "./Avatar";
 import { MenubarTrigger } from "@radix-ui/react-menubar";
-import { useEffect } from "react";
-export function NavbarComponent() {
+import React, { useEffect } from "react";
+import { logout } from "@/app/login/action";
+
+export function NavbarComponent({ visible }: { visible: boolean }) {
   return (
     <div className="fixed w-full ">
       <div className="bg-black justify-center items-center flex">
@@ -53,8 +56,15 @@ export function NavbarComponent() {
           <MenubarContent>
             <MenubarRadioGroup value="benoit">
               <MenubarRadioItem value="andy">Wishlist</MenubarRadioItem>
-              {}
-              <MenubarRadioItem value="andy">Logout</MenubarRadioItem>
+              <>
+                {visible && (
+                  <>
+                    <MenubarRadioItem onClick={() => logout()} value="andy">
+                      Logout
+                    </MenubarRadioItem>
+                  </>
+                )}
+              </>
             </MenubarRadioGroup>
           </MenubarContent>
         </MenubarMenu>

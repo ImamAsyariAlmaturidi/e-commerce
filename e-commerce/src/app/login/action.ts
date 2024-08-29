@@ -15,6 +15,14 @@ import { cookies } from "next/headers";
 
 // Pada action ini kita akan melakukan request ke server untuk login
 // Karena kita di sini belum memiliki backend yang bisa di-call, kita akan membuat logicnya di sini (asumsikan di sini se-akan-akan kita sedang berada di server)
+
+export const logout = async () => {
+  const cookieStore = cookies();
+  cookieStore.delete("token");
+
+  return redirect("/login");
+};
+
 export const doLogin = async (formData: FormData) => {
   const loginInputSchema = z.object({
     email: z.string().email({
