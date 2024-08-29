@@ -1,6 +1,10 @@
 "use server";
 import { NextRequest, NextResponse } from "next/server";
-import { getWishlistByUserId, createUserWishlist } from "@/db/models/Wishlist";
+import {
+  getWishlistByUserId,
+  createUserWishlist,
+  deleteUserWishlistById,
+} from "@/db/models/Wishlist";
 import { never, z } from "zod";
 import { ObjectId } from "mongodb";
 const userInputSchema = z.object({
@@ -73,6 +77,44 @@ export async function POST(request: NextRequest) {
       return null;
     }
     const result = await createUserWishlist({
+      userId: new ObjectId(userId),
+      productId: new ObjectId(productId),
+    });
+
+    return NextResponse.json<MyResponse<typeof result>>({
+      statusCode: 201,
+      data: result,
+    });
+  } catch (error) {
+    return NextResponse.json<MyResponse<never>>({
+      statusCode: 400,
+      message: "Bad Request",
+      error: (error as Error).message,
+    });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const productId = request.headers.get("productid");
+    const userId = request.headers.get("x-user-id");
+
+    const data = {
+      productId,
+      userId,
+    };
+
+    if (!data) {
+      return null;
+    }
+    const parsedData = userInputSchema.safeParse({ userId });
+    if (!parsedData.success) {
+      throw parsedData.error;
+    }
+    if (!userId || !productId) {
+      return null;
+    }
+    const result = await deleteUserWishlistById({
       userId: new ObjectId(userId),
       productId: new ObjectId(productId),
     });

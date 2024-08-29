@@ -1,3 +1,4 @@
+import RemoveWishlist from "@/components/RemoveWishlist";
 import { Button } from "@/components/ui/button";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -80,7 +81,7 @@ const Page = async () => {
                       </p>
                       <div className="flex">
                         <Button className="w-full py-2 mx-6 ">CHECKOUT</Button>
-                        <Button className="w-full mx-6 py-2">REMOVE</Button>
+                        <RemoveWishlist productId={product._id} />
                       </div>
                     </div>
                   </div>

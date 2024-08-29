@@ -1,30 +1,22 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-const AddWishlist = ({
-  name,
-  price,
-  productId,
-}: {
-  name: string;
-  price: number;
-  productId: string;
-}) => {
+const RemoveWishlist = ({ productId }: { productId: string }) => {
   const router = useRouter();
   async function addWishlist(productId: string) {
     try {
       await fetch("http://localhost:3000/api/wishlist", {
         cache: "no-store",
-        method: "POST",
+        method: "DELETE",
         headers: {
           productId,
         },
       });
       toast("Success", {
-        description: `${name} with price ${price} success add to wishlist`,
+        description: `success delete from wishlist`,
         duration: 5000,
       });
       return router.push("/wishlist");
@@ -40,10 +32,10 @@ const AddWishlist = ({
         variant="outline"
         onClick={() => addWishlist(productId)}
       >
-        Add to wishlist
+        Remove
       </Button>
     </div>
   );
 };
 
-export default AddWishlist;
+export default RemoveWishlist;

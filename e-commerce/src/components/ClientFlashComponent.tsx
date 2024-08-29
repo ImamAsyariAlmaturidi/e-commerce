@@ -14,7 +14,7 @@ const ClientFlashComponent = () => {
       errorMessageRef.current = newErrorMessage;
 
       toast.error(newErrorMessage, {
-        duration: 12000,
+        duration: 5000,
       });
     }
   }, [searchParams]);
