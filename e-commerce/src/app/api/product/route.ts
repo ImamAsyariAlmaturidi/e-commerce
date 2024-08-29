@@ -37,10 +37,6 @@ type MyResponse<T> = {
   error?: string;
 };
 export async function GET(request: NextRequest) {
-  console.log("INSIDE GET /api/users");
-  console.log("x-user-id", request.headers.get("x-user-id"));
-  console.log("x-user-email", request.headers.get("x-user-email"));
-  console.log("x-custom-value", request.headers.get("x-custom-value"));
   try {
     const products = await getProducts();
     return NextResponse.json<MyResponse<unknown>>(

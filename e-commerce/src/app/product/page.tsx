@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { ItemType } from "../types/dataTypes";
 import { BreadCrumbComponent } from "@/components/BreadCrumb";
 import { PaginationComponent } from "@/components/Pagination";
@@ -6,14 +7,40 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import AddWishlist from "@/components/AddWishlist";
-const Page = async () => {
-  const res = await fetch("http://localhost:3000/api/product", {
-    method: "GET",
-  });
+import { useState } from "react";
+import Search from "@/components/Search";
 
-  const { data } = await res.json();
+type dataJson = {
+  createdAt: string;
+  description: string;
+  excerpt: string;
+  images: string[];
+  name: string;
+  price: number;
+  slug: string;
+  tags: string[];
+  thumbnail: string;
+  updatedAt: string;
+  _id: string;
+};
+const Page = () => {
+  const [data, setData] = useState<dataJson[]>([]);
+  async function getData() {
+    try {
+      const res = await fetch("http://localhost:3000/api/product", {
+        method: "GET",
+      });
+      const { data } = await res.json();
+      const limitedData: dataJson[] = data?.slice(0, 6);
+      setData(limitedData);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  const limitedData = data.slice(0, 6);
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <div className="bg-white">
       {/* <InfiniteScroll
@@ -41,9 +68,10 @@ const Page = async () => {
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 ">
         <div className=" mt-24 justify-around">
           <BreadCrumbComponent />
+          <Search />
         </div>
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {limitedData.map((item: ItemType) => (
+          {data?.map((item: dataJson) => (
             <div
               key={item._id}
               className="group  bg-white border rounded-md overflow-hidden shadow-sm"

@@ -32,8 +32,6 @@ export const middleware = async (request: NextRequest) => {
   // ?? Di sini kita akan melakukan "authentication" pada route `/api`
   // ?? Hal ini secara efektif akan membuat semua route `/api` menjadi "private", termasuk di dalamnya adalah untuk melakukan "register" (POST /users)
   if (request.url.includes("/api/wishlist")) {
-    console.log("API", request.method, request.url);
-
     // Di sini kita akan mengambil token yang ada di dalam cookies
     const cookiesStore = cookies();
     // console.log(cookiesStore, "<<< cookiestore");

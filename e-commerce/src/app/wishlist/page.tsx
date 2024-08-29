@@ -50,39 +50,43 @@ const Page = async () => {
             Your Wishlist
           </h1>
           <p className="mt-4 text-xl text-gray-600 dark:text-gray-400">
-            {data.flatMap((item) => item.products).length} items
+            {data?.flatMap((item) => item.products).length} items
           </p>
         </div>
         <div className="mt-10 lg:mt-12 grid grid-cols-1 gap-y-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-10">
-          {data
-            .flatMap((item) => item.products)
-            .map((product) => (
-              <div
-                key={product._id}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
-              >
-                <img
-                  src={product.thumbnail}
-                  alt={product.name}
-                  className="w-full h-48 object-cover object-center"
-                />
-                <div className="p-4">
-                  <h2 className="text-lg font-medium text-gray-800 dark:text-white">
-                    {product.name}
-                  </h2>
-                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                    {product.description}
-                  </p>
-                  <p className="my-4 text-base font-semibold text-gray-800 dark:text-white">
-                    Rp.{product.price}
-                  </p>
-                  <div className="flex">
-                    <Button className="w-full py-2 mx-6 ">CHECKOUT</Button>
-                    <Button className="w-full mx-6 py-2">REMOVE</Button>
+          {data?.length > 0 && (
+            <>
+              {data
+                .flatMap((item) => item.products)
+                .map((product) => (
+                  <div
+                    key={product._id}
+                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                  >
+                    <img
+                      src={product.thumbnail}
+                      alt={product.name}
+                      className="w-full h-48 object-cover object-center"
+                    />
+                    <div className="p-4">
+                      <h2 className="text-lg font-medium text-gray-800 dark:text-white">
+                        {product.name}
+                      </h2>
+                      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        {product.description}
+                      </p>
+                      <p className="my-4 text-base font-semibold text-gray-800 dark:text-white">
+                        Rp.{product.price}
+                      </p>
+                      <div className="flex">
+                        <Button className="w-full py-2 mx-6 ">CHECKOUT</Button>
+                        <Button className="w-full mx-6 py-2">REMOVE</Button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
+                ))}
+            </>
+          )}
         </div>
       </div>
     </div>

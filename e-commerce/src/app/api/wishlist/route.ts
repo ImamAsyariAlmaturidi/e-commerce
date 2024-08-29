@@ -1,7 +1,7 @@
 "use server";
 import { NextRequest, NextResponse } from "next/server";
 import { getWishlistByUserId, createUserWishlist } from "@/db/models/Wishlist";
-import { z } from "zod";
+import { never, z } from "zod";
 import { ObjectId } from "mongodb";
 const userInputSchema = z.object({
   userId: z.string(),
@@ -28,6 +28,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json<MyResponse<never>>({
         statusCode: 404,
         message: "No wishlist found",
+        data: undefined,
+        error: "hahah",
       });
     }
 
@@ -59,8 +61,7 @@ export async function POST(request: NextRequest) {
       productId,
       userId,
     };
-    console.log(request.headers);
-    console.log(data);
+
     if (!data) {
       return null;
     }
