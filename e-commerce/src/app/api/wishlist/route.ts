@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getWishlistByUserId, createUserWishlist } from "@/db/models/Wishlist";
 import { z } from "zod";
+import { ObjectId } from "mongodb";
 const userInputSchema = z.object({
   userId: z.string(),
 });
@@ -49,23 +50,41 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// export async function POST(request: NextRequest) {
-//   try {
-//     const data = await request.json();
-//     const parsedData = userInputSchema.safeParse(data);
-//     if (!parsedData.success) {
-//       throw parsedData.error;
-//     }
-//     const result = await createUserWishlist(data);
-//     return NextResponse.json<MyResponse<typeof result>>({
-//       statusCode: 201,
-//       data: result,
-//     });
-//   } catch (error) {
-//     return NextResponse.json<MyResponse<never>>({
-//       statusCode: 400,
-//       message: "Bad Request",
-//       error: (error as Error).message,
-//     });
-//   }
-// }
+export async function POST(request: NextRequest) {
+  try {
+    const productId = request.headers.get("productid");
+    const userId = request.headers.get("x-user-id");
+
+    const data = {
+      productId,
+      userId,
+    };
+    console.log(request.headers);
+    console.log(data);
+    if (!data) {
+      return null;
+    }
+    const parsedData = userInputSchema.safeParse({ userId });
+    if (!parsedData.success) {
+      throw parsedData.error;
+    }
+    if (!userId || !productId) {
+      return null;
+    }
+    const result = await createUserWishlist({
+      userId: new ObjectId(userId),
+      productId: new ObjectId(productId),
+    });
+
+    return NextResponse.json<MyResponse<typeof result>>({
+      statusCode: 201,
+      data: result,
+    });
+  } catch (error) {
+    return NextResponse.json<MyResponse<never>>({
+      statusCode: 400,
+      message: "Bad Request",
+      error: (error as Error).message,
+    });
+  }
+}

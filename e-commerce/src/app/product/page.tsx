@@ -66,7 +66,11 @@ const Page = async () => {
                   <p className="mt- text-sm font-medium text-gray-900">
                     ${item.price}
                   </p>
-                  <AddWishlist name={item.name} price={item.price} />
+                  <AddWishlist
+                    name={item.name}
+                    price={item.price}
+                    productId={item._id}
+                  />
                 </div>
               </div>
             </div>

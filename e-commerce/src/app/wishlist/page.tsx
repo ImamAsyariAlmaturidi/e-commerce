@@ -28,6 +28,7 @@ type WishListType<T> = {
 
 const Page = async () => {
   const res = await fetch("http://localhost:3000/api/wishlist", {
+    cache: "no-store",
     method: "GET",
     headers: {
       Cookie: cookies().toString(),
