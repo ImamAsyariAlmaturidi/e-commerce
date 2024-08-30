@@ -5,45 +5,9 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
 import Link from "next/link";
-type ProductType = {
-  _id: string;
-  name: string;
-  slug: string;
-  description: string;
-  excerpt: string;
-  price: number;
-  tags: string[];
-  thumbnail: string;
-  images: string[];
-  createdAt: string;
-  updatedAt: string;
-};
-
-type WishListType<T> = {
-  _id: string;
-  userId: string;
-  productId: string;
-  createdAt: string;
-  updatedAt: string;
-  products: T[];
-};
+import { getData } from "./action";
 
 const Page = async () => {
-  const res = await fetch("http://localhost:3000/api/wishlist", {
-    cache: "no-store",
-    method: "GET",
-    headers: {
-      Cookie: cookies().toString(),
-    },
-  });
-
-  if (!res.ok) {
-    return redirect("/login");
-  }
-
-  const json = await res.json();
-  const data: WishListType<ProductType>[] = json.data;
-
   let visible: boolean;
 
   const store = cookies();
@@ -53,13 +17,16 @@ const Page = async () => {
   } else {
     visible = true;
   }
-
+  const data = await getData();
+  if (!data) {
+    return <NavbarComponent visible={visible} />;
+  }
   return (
     <div>
       <NavbarComponent visible={visible} />
 
       <div className="bg-gray-100 dark:bg-gray-900 pt-32 lg:pt-20 min-h-screen">
-        <div className="mx-auto container px-4 md:px-6 2xl:px-0 py-12 flex flex-col items-center">
+        <div className="mx-auto container px-36 md:px-6 2xl:px-0 py-12  flex flex-col items-center">
           <div className="text-center">
             <h1 className="text-3xl lg:text-4xl font-semibold text-gray-800 dark:text-white">
               Your Wishlist
@@ -84,22 +51,22 @@ const Page = async () => {
                           alt={product.name}
                           className="w-full h-48 object-cover object-center"
                         />
-                        <div className="p-4">
-                          <h2 className="text-lg font-medium text-gray-800 dark:text-white">
-                            {product.name}
-                          </h2>
-                          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                            {product.description}
-                          </p>
-                          <p className="my-4 text-base font-semibold text-gray-800 dark:text-white">
-                            Rp.{product.price}
-                          </p>
-                        </div>
-                        <div className="flex justify-around mb-6">
-                          <Button className="w-52 py-2">CHECKOUT</Button>
-                          <RemoveWishlist productId={product._id} />
-                        </div>
                       </Link>
+                      <div className="p-4">
+                        <h2 className="text-lg font-medium text-gray-800 dark:text-white">
+                          {product.name}
+                        </h2>
+                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                          {product.description}
+                        </p>
+                        <p className="my-4 text-base font-semibold text-gray-800 dark:text-white">
+                          Rp.{product.price}
+                        </p>
+                      </div>
+                      <div className="flex justify-around mb-6">
+                        <Button className="w-52 py-2">CHECKOUT</Button>
+                        <RemoveWishlist productId={product._id} />
+                      </div>
                     </div>
                   ))}
               </>

@@ -43,12 +43,17 @@ type MyResponse<T> = {
 };
 export async function GET(request: NextRequest) {
   try {
+    const name = request.headers.get("name");
     const skip = parseInt(request.headers.get("skip") as string, 10) || 0;
     const limit = parseInt(request.headers.get("limit") as string, 10) || 10;
 
-    const productss = await getProducts(skip, limit);
+    let productss;
+    if (!name) {
+      productss = await getProducts(skip, limit);
+    } else {
+      productss = await getProducts(skip, limit, name);
+    }
     const totalProducts = await getTotalProductCount();
-    // const products = await getProducts();
     return NextResponse.json<MyResponse<unknown>>(
       {
         statusCode: 200,

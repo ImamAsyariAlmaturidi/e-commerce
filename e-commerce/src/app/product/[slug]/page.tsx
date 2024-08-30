@@ -1,4 +1,3 @@
-"use client";
 import AddWishlist from "@/components/AddWishlist";
 import React, { useEffect, useState } from "react";
 
@@ -20,42 +19,23 @@ type SlugType = {
   slug: string;
 };
 
-const Page = ({ params }: { params: SlugType }) => {
-  const [data, setData] = useState<ProductType | null>(null);
-
-  async function getDataBySlug(slug: string) {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/product/${slug}`,
-        {
-          cache: "no-store",
-          method: "GET",
-          headers: {
-            slug: slug,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      setData(result.data);
-    } catch (error) {
-      console.log(error);
+const Page = async ({ params }: { params: SlugType }) => {
+  const response = await fetch(
+    `http://localhost:3000/api/product/${params.slug}`,
+    {
+      cache: "no-store",
+      method: "GET",
+      headers: {
+        slug: params.slug,
+      },
     }
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
 
-  useEffect(() => {
-    if (params?.slug) {
-      getDataBySlug(params.slug);
-    }
-  }, [params]);
-
-  if (!data) {
-    return <div>Loading...</div>;
-  }
+  const { data }: { data: ProductType } = await response.json();
 
   return (
     <div className="font-sans pt-36 bg-gray-100">
@@ -64,7 +44,7 @@ const Page = ({ params }: { params: SlugType }) => {
           <div className="lg:col-span-3 w-full text-center">
             <div className="px-4 py-10 rounded-lg shadow-lg bg-gray-50">
               <img
-                src={data.thumbnail} // Use product's thumbnail
+                src={data.thumbnail}
                 alt={data.name}
                 className="w-3/4 rounded object-cover mx-auto"
               />

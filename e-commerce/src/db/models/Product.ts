@@ -8,7 +8,7 @@ type ProductModel = {
   _id: ObjectId;
   name: string;
   slug: string;
-  decription: string;
+  description: string;
   excerpt: string;
   price: number;
   tags: string[];
@@ -33,12 +33,35 @@ export const getTotalProductCount = async () => {
   return count;
 };
 
-export const getProducts = async (skip: number, limit: number) => {
+export const getProducts = async (
+  skip: number,
+  limit: number,
+  name?: string
+) => {
   const db = await getDb();
+
+  const query: any = {};
+
+  if (name) {
+    query.$or = [
+      {
+        name: {
+          $regex: name,
+          $options: "i",
+        },
+      },
+      {
+        slug: {
+          $regex: name,
+          $options: "i",
+        },
+      },
+    ];
+  }
 
   const products = await db
     .collection(COLLECTION_PRODUCT)
-    .find()
+    .find(query)
     .skip(skip)
     .limit(limit)
     .toArray();
@@ -49,21 +72,21 @@ export const getProducts = async (skip: number, limit: number) => {
 export const getProductById = async (_id: getProductByIdInputType) => {
   const db = await getDb();
 
-  const products = (await db.collection(COLLECTION_PRODUCT).findOne({
+  const product = (await db.collection(COLLECTION_PRODUCT).findOne({
     _id,
   })) as ProductModel;
 
-  return products;
+  return product;
 };
 
 export const createProduct = async (product: productInputType) => {
   const db = await getDb();
 
-  const create = await db.collection(COLLECTION_PRODUCT).insertOne({
+  const result = await db.collection(COLLECTION_PRODUCT).insertOne({
     ...product,
   });
 
-  return create;
+  return result;
 };
 
 export const searchProductBySlug = async (slug: string) => {
@@ -71,29 +94,6 @@ export const searchProductBySlug = async (slug: string) => {
   const product = await db.collection(COLLECTION_PRODUCT).findOne({
     slug: slug,
   });
-
-  return product;
-};
-
-export const searchProductByName = async (name: string) => {
-  const db = await getDb();
-  const product = await db
-    .collection(COLLECTION_PRODUCT)
-    .find({
-      $or: [
-        {
-          name: {
-            $regex: name,
-          },
-        },
-        {
-          slug: {
-            $regex: name,
-          },
-        },
-      ],
-    })
-    .toArray();
 
   return product;
 };

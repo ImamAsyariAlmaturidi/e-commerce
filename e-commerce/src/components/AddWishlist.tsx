@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import { Button } from "./ui/button";
-import { toast } from "sonner";
+import { addWishlist } from "@/app/wishlist/action";
 import { useRouter } from "next/navigation";
-
 const AddWishlist = ({
   name,
   price,
@@ -14,20 +13,10 @@ const AddWishlist = ({
   productId: string;
 }) => {
   const router = useRouter();
-  async function addWishlist(productId: string) {
+  async function addToWishlist(productId: string) {
     try {
-      await fetch("http://localhost:3000/api/wishlist", {
-        cache: "no-store",
-        method: "POST",
-        headers: {
-          productId,
-        },
-      });
-      toast("Success", {
-        description: `${name} with price ${price} success add to wishlist`,
-        duration: 5000,
-      });
-      return router.push("/wishlist");
+      await addWishlist(productId);
+      router.push("/wishlist");
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +27,7 @@ const AddWishlist = ({
       <Button
         className="text-sm"
         variant="outline"
-        onClick={() => addWishlist(productId)}
+        onClick={() => addToWishlist(productId)}
       >
         Add to wishlist
       </Button>
