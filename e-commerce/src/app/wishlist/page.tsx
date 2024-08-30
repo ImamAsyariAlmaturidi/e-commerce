@@ -18,6 +18,7 @@ const Page = async () => {
     visible = true;
   }
   const data = await getData();
+
   if (!data) {
     return <NavbarComponent visible={visible} />;
   }
@@ -28,7 +29,7 @@ const Page = async () => {
       <div className="bg-gray-100 dark:bg-gray-900 pt-32 lg:pt-20 min-h-screen">
         <div className="mx-auto container px-36 md:px-6 2xl:px-0 py-12  flex flex-col items-center">
           <div className="text-center">
-            <h1 className="text-3xl lg:text-4xl font-semibold text-gray-800 dark:text-white">
+            <h1 className="text-3xl lg:text-2xl font-semibold text-gray-800 dark:text-white">
               Your Wishlist
             </h1>
             <p className="mt-4 text-xl text-gray-600 dark:text-gray-400">
@@ -43,27 +44,27 @@ const Page = async () => {
                   .map((product) => (
                     <div
                       key={product._id}
-                      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                      className="bg-white h-[120%] dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
                     >
                       <Link href={`/product/${product.slug}`}>
                         <img
                           src={product.thumbnail}
                           alt={product.name}
-                          className="w-full h-48 object-cover object-center"
+                          className="w-full h-[70%] object-cover object-center"
                         />
                       </Link>
                       <div className="p-4">
-                        <h2 className="text-lg font-medium text-gray-800 dark:text-white">
+                        <h2 className="text-lg font-medium font-mono text-gray-800 dark:text-white">
                           {product.name}
                         </h2>
                         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                           {product.description}
                         </p>
-                        <p className="my-4 text-base font-semibold text-gray-800 dark:text-white">
+                        <p className="my-2 text-base font-semibold text-gray-800 dark:text-white">
                           Rp.{product.price}
                         </p>
                       </div>
-                      <div className="flex justify-around mb-6">
+                      <div className="flex justify-around">
                         <Button className="w-52 py-2">CHECKOUT</Button>
                         <RemoveWishlist productId={product._id} />
                       </div>

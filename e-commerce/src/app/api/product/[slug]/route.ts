@@ -13,7 +13,6 @@ export async function GET(request: NextRequest) {
       data: product,
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({
       message: "failed",
       data: [],

@@ -57,7 +57,7 @@ export async function getData() {
     const data: WishListType<ProductType>[] = json.data;
     return data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
@@ -78,7 +78,7 @@ export async function addWishlist(productId: string) {
     revalidatePath("/wishlist");
     redirect("/wishlist");
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
@@ -93,6 +93,6 @@ export async function deleteWishlist(productId: string) {
     });
     revalidatePath("/wishlist");
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }

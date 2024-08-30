@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { NavbarComponent } from "@/components/Navbar";
+import { getDataProduct } from "./product/action";
 
 const Page = async () => {
-  const res = await fetch("http://localhost:3000/api/product");
-  const { data } = await res.json();
+  const { data } = await getDataProduct();
 
   let visible: boolean;
 
@@ -27,12 +27,13 @@ const Page = async () => {
             src="https://catharsisbrand.com/cdn/shop/files/cat-3x2agosto2024Desktop_1800x.png?v=1722940897"
             alt=""
           />
-          <div className="p-10 ">
-            <BreadCrumbComponent />
+          <div className="text-center">
+            <h1 className="p-10 font-bold text-lg tracking-wide">NEW DROP</h1>
+            <h1 className="text-center text-xs">CROPPED UNISEX </h1>
           </div>
           {data.length > 0 && (
             <div className="grid grid-cols-3 gap-5 px-10">
-              <MainCard data={data} />
+              <MainCard data={data} initialNumberSlice={0} numberSlice={8} />
             </div>
           )}
           <div className="text-center pb-12">

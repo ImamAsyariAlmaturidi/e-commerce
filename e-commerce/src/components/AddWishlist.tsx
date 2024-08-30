@@ -18,7 +18,7 @@ const AddWishlist = ({
       await addWishlist(productId);
       router.push("/wishlist");
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

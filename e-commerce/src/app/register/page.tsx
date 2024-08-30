@@ -6,16 +6,40 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { NavbarComponent } from "@/components/Navbar";
 
+// Tipe data untuk form state
+interface FormData {
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  email?: string;
+  phoneNumber?: string;
+  password?: string;
+}
+
+interface ApiResponse {
+  statusCode: number;
+  message: string;
+  error: string;
+}
+
+type messageType = {
+  fields: string;
+  message: string;
+};
+
 const Page = () => {
   const router = useRouter();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState<FormData>({});
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   async function register(e: React.FormEvent) {
     e.preventDefault();
@@ -28,33 +52,30 @@ const Page = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          username,
-          email,
-          phoneNumber,
-          password,
-        }),
+        body: JSON.stringify(formData),
       });
 
-      const message = await res.json();
+      const message: ApiResponse = await res.json();
 
-      if (message.statusCode === 400) {
-        toast(
-          `email or username already using, please choice another email or username `,
-          {
-            description: "error",
-          }
-        );
+      if (message.message === "Validation failed") {
+        const parsedErrors = JSON.parse(message.error);
+        toast(parsedErrors[0].field + " " + parsedErrors[0].message, {
+          description: "and please make sure not empty fields",
+        });
+      } else if (message.statusCode === 400) {
+        toast(message.message, {
+          description: "error",
+        });
       } else {
-        toast("success registration account", {
+        toast("Success registration account", {
           description: "Yey",
         });
         return router.push("/login");
       }
-    } catch (error: unknown) {
-      console.log(error);
+    } catch (error) {
+      toast("An unexpected error occurred", {
+        description: "Please try again later.",
+      });
     }
   }
 
@@ -73,54 +94,54 @@ const Page = () => {
           <form onSubmit={register} className="flex flex-col gap-5">
             <div className="grid grid-cols-2 gap-4">
               <Input
+                name="firstName"
                 className="w-full text-sm font-mono font-extralight bg-neutral-200 shadow-sm"
                 type="text"
                 placeholder="First Name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
+                value={formData.firstName || ""}
+                onChange={handleChange}
               />
               <Input
+                name="lastName"
                 className="w-full text-sm font-mono font-extralight bg-neutral-200 shadow-sm"
                 type="text"
                 placeholder="Last Name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
+                value={formData.lastName || ""}
+                onChange={handleChange}
               />
             </div>
             <Input
+              name="username"
               className="w-full text-sm font-mono font-extralight bg-neutral-200 shadow-sm"
               type="text"
               placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
+              value={formData.username || ""}
+              onChange={handleChange}
             />
             <Input
+              name="email"
               className="w-full text-sm font-mono font-extralight bg-neutral-200 shadow-sm"
-              type="email"
+              type="text"
               placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              value={formData.email || ""}
+              onChange={handleChange}
             />
             <Input
+              name="phoneNumber"
               className="w-full text-sm font-mono font-extralight bg-neutral-200 shadow-sm"
               type="text"
               inputMode="numeric"
               placeholder="Phone Number"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
+              value={formData.phoneNumber || ""}
+              onChange={handleChange}
             />
             <Input
+              name="password"
               className="w-full text-sm font-mono font-extralight bg-neutral-200 shadow-sm"
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              value={formData.password || ""}
+              onChange={handleChange}
             />
             <Button type="submit" className="p-4 mt-4">
               Register

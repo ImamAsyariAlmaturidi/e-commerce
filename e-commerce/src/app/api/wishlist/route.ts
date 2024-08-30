@@ -42,7 +42,6 @@ export async function GET(request: NextRequest) {
       data: wishlist,
     });
   } catch (error) {
-    console.log(error);
     return NextResponse.json<MyResponse<never>>(
       {
         statusCode: 500,
