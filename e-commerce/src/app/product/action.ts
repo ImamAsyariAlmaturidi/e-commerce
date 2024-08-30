@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 type ProductType = {
   _id: string;
   name: string;
@@ -24,7 +25,7 @@ type WishListType<T> = {
 };
 export async function getDataProduct() {
   try {
-    const res = await fetch("http://localhost:3000/api/product", {
+    const res = await fetch(`${BASE_URL}api/product`, {
       cache: "no-store",
       method: "GET",
       headers: {

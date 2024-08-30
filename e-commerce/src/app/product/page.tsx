@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgresComponent } from "@/components/Progres";
-
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 type dataJson = {
   createdAt: string;
   description: string;
@@ -30,7 +30,7 @@ const Page = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/product", {
+      const res = await fetch(`${BASE_URL}api/product`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

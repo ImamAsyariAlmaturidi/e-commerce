@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { NavbarComponent } from "@/components/Navbar";
-
+const BASE_URL = process.env.PUBLIC_NEXT_BASE_URL;
 // Tipe data untuk form state
 interface FormData {
   firstName?: string;
@@ -47,7 +47,7 @@ const Page = () => {
     setSuccess(null);
 
     try {
-      const res = await fetch("http://localhost:3000/api/user", {
+      const res = await fetch(`${BASE_URL}api/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

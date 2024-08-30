@@ -5,7 +5,7 @@ import { getUserByEmail } from "@/db/models/User";
 import { compareTextWithHash } from "@/utils/bcrypt";
 import { signToken } from "@/utils/jwt";
 import { redirect } from "next/navigation";
-
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 // Di sini kita akan membuat schema inputan login, maka dari itu, sekalian kita validasi dengan zod
 import { z } from "zod";
 
@@ -50,14 +50,14 @@ export const doLogin = async (formData: FormData) => {
     const errFinalMessage = `${errPath} - ${errMessage}`;
 
     // Mengembalikan error via redirect
-    return redirect(`http://localhost:3000/login?error=${errFinalMessage}`);
+    return redirect(`${BASE_URL}login?error=${errFinalMessage}`);
   }
 
   // Memvalidasi data terhadap database
   const user = await getUserByEmail(parsedData.data.email);
 
   if (!user || !compareTextWithHash(parsedData.data.password, user.password)) {
-    return redirect(`http://localhost:3000/login?error=Invalid%20credentials`);
+    return redirect(`${BASE_URL}login?error=Invalid%20credentials`);
   }
 
   // Membuat Payload dan Token
@@ -81,5 +81,5 @@ export const doLogin = async (formData: FormData) => {
   });
 
   // Melakukan redirect ke halaman "/"
-  return redirect(`http://localhost:3000/`);
+  return redirect(`${BASE_URL}`);
 };

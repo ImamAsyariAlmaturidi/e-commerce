@@ -13,7 +13,7 @@ import { z } from "zod";
 // !! cookies tidak bisa di-import secara otomatis, jadi harus diketik manual yah
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
-
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 // Pada action ini kita akan melakukan request ke server untuk login
 // Karena kita di sini belum memiliki backend yang bisa di-call, kita akan membuat logicnya di sini (asumsikan di sini se-akan-akan kita sedang berada di server)
 type ProductType = {
@@ -41,7 +41,7 @@ type WishListType<T> = {
 
 export async function getData() {
   try {
-    const res = await fetch("http://localhost:3000/api/wishlist", {
+    const res = await fetch(`${BASE_URL}api/wishlist`, {
       cache: "no-store",
       method: "GET",
       headers: {
@@ -63,7 +63,7 @@ export async function getData() {
 
 export async function addWishlist(productId: string) {
   try {
-    const res = await fetch("http://localhost:3000/api/wishlist", {
+    const res = await fetch(`${BASE_URL}api/wishlist`, {
       cache: "no-store",
       method: "POST",
       headers: {
@@ -84,7 +84,7 @@ export async function addWishlist(productId: string) {
 
 export async function deleteWishlist(productId: string) {
   try {
-    await fetch("http://localhost:3000/api/wishlist", {
+    await fetch(`${BASE_URL}api/wishlist`, {
       method: "DELETE",
       headers: {
         Cookie: cookies().toString(),

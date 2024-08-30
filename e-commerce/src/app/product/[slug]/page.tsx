@@ -1,6 +1,7 @@
 import AddWishlist from "@/components/AddWishlist";
 import React, { useEffect, useState } from "react";
 import { Metadata } from "next";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 type ProductType = {
   _id: string;
   createdAt: string;
@@ -24,16 +25,13 @@ export async function generateMetadata({
 }: {
   params: SlugType;
 }): Promise<Metadata> {
-  const response = await fetch(
-    `http://localhost:3000/api/product/${params.slug}`,
-    {
-      cache: "no-store",
-      method: "GET",
-      headers: {
-        slug: params.slug,
-      },
-    }
-  );
+  const response = await fetch(`${BASE_URL}/api/product/${params.slug}`, {
+    cache: "no-store",
+    method: "GET",
+    headers: {
+      slug: params.slug,
+    },
+  });
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
@@ -51,16 +49,13 @@ export async function generateMetadata({
 }
 
 export const Page = async ({ params }: { params: SlugType }) => {
-  const response = await fetch(
-    `http://localhost:3000/api/product/${params.slug}`,
-    {
-      cache: "no-store",
-      method: "GET",
-      headers: {
-        slug: params.slug,
-      },
-    }
-  );
+  const response = await fetch(`${BASE_URL}api/product/${params.slug}`, {
+    cache: "no-store",
+    method: "GET",
+    headers: {
+      slug: params.slug,
+    },
+  });
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
