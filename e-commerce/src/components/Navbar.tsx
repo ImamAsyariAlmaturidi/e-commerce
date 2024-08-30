@@ -38,7 +38,7 @@ export function NavbarComponent({ visible }: { visible: boolean }) {
         <MenubarMenu>
           <Link href={"/"}>
             <span className="cursor-pointer transition-all hover:text-orange-600 ">
-              CATHARSIS EMPIRE
+              ASHARY SECT
             </span>
           </Link>
         </MenubarMenu>

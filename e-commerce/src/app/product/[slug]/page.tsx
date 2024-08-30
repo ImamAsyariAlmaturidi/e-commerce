@@ -1,6 +1,6 @@
 import AddWishlist from "@/components/AddWishlist";
 import React, { useEffect, useState } from "react";
-
+import { Metadata } from "next";
 type ProductType = {
   _id: string;
   createdAt: string;
@@ -19,7 +19,38 @@ type SlugType = {
   slug: string;
 };
 
-const Page = async ({ params }: { params: SlugType }) => {
+export async function generateMetadata({
+  params,
+}: {
+  params: SlugType;
+}): Promise<Metadata> {
+  const response = await fetch(
+    `http://localhost:3000/api/product/${params.slug}`,
+    {
+      cache: "no-store",
+      method: "GET",
+      headers: {
+        slug: params.slug,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const { data }: { data: ProductType } = await response.json();
+
+  return {
+    title: data.name,
+    description: data.description,
+    icons: {
+      icon: "/logo.ico",
+    },
+  };
+}
+
+export const Page = async ({ params }: { params: SlugType }) => {
   const response = await fetch(
     `http://localhost:3000/api/product/${params.slug}`,
     {
