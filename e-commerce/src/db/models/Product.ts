@@ -16,11 +16,6 @@ type ProductModel = {
   images: string[];
 };
 
-type responseType = {
-  page: number;
-  currentPage: number;
-  totalPage: number;
-};
 type productInputType = Omit<ProductModel, "_id">;
 type getProductByIdInputType = Pick<ProductModel, "_id">;
 
@@ -59,4 +54,36 @@ export const createProduct = async (product: productInputType) => {
   });
 
   return create;
+};
+
+export const searchProductBySlug = async (slug: string) => {
+  const db = await getDb();
+  const product = await db.collection(COLLECTION_PRODUCT).findOne({
+    slug: slug,
+  });
+
+  return product;
+};
+
+export const searchProductByName = async (name: string) => {
+  const db = await getDb();
+  const product = await db
+    .collection(COLLECTION_PRODUCT)
+    .find({
+      $or: [
+        {
+          name: {
+            $regex: name,
+          },
+        },
+        {
+          slug: {
+            $regex: name,
+          },
+        },
+      ],
+    })
+    .toArray();
+
+  return product;
 };

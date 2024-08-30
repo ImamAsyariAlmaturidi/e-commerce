@@ -4,9 +4,21 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { doLogin } from "./action";
 import ClientFlashComponent from "@/components/ClientFlashComponent";
+import { NavbarComponent } from "@/components/Navbar";
+import { cookies } from "next/headers";
 const Page = () => {
+  let visible: boolean;
+
+  const store = cookies();
+  const token = store.get("token");
+  if (!token) {
+    visible = false;
+  } else {
+    visible = true;
+  }
   return (
     <div>
+      <NavbarComponent visible={visible} />
       <header className="h-72 text-black bg-slate-200 flex justify-center items-end font-extrabold text-3xl tracking-wide">
         Selamat Datang di Catharsis Empire
       </header>

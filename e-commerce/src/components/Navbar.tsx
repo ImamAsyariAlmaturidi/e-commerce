@@ -29,7 +29,7 @@ export function NavbarComponent({ visible }: { visible: boolean }) {
       </div>
       <Menubar className="flex p-8 justify-around font-mono bg-white text-black ">
         <MenubarMenu>
-          <Link href={"product"}>
+          <Link href={"/product"}>
             <span className="cursor-pointer transition-all hover:text-orange-600">
               ALL PRODUCT
             </span>
@@ -43,7 +43,7 @@ export function NavbarComponent({ visible }: { visible: boolean }) {
           </Link>
         </MenubarMenu>
         <MenubarMenu>
-          <Link href={"wishlist"}>
+          <Link href={"/wishlist"}>
             <span className="cursor-pointer transition-all hover:text-orange-600 ">
               WISHLIST
             </span>
@@ -55,7 +55,9 @@ export function NavbarComponent({ visible }: { visible: boolean }) {
           </MenubarTrigger>
           <MenubarContent>
             <MenubarRadioGroup value="benoit">
-              <MenubarRadioItem value="andy">Wishlist</MenubarRadioItem>
+              <MenubarRadioItem value="andy">
+                <Link href={"/wishlist"}>Wishlist</Link>
+              </MenubarRadioItem>
               <>
                 {visible && (
                   <>
