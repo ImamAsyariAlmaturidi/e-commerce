@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { addWishlist } from "@/app/wishlist/action";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 const AddWishlist = ({
   name,
   price,
@@ -16,6 +17,9 @@ const AddWishlist = ({
   async function addToWishlist(productId: string) {
     try {
       await addWishlist(productId);
+      toast("Success add product to wishlist", {
+        duration: 6000,
+      });
       router.push("/wishlist");
     } catch (error) {
       throw error;

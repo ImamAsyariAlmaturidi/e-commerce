@@ -59,10 +59,10 @@ const Page = async () => {
                         <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 flex-grow">
                           {product.description}
                         </p>
-                        <p className="text-base font-semibold text-gray-800 dark:text-white mb-4">
-                          Rp.{product.price}
-                        </p>
-                        <div className="flex justify-between items-center">
+                        <div className="grid grid-cols-2">
+                          <div className="text-base font-semibold text-gray-800  dark:text-white mb-4">
+                            Rp.{product.price}
+                          </div>
                           <Button className="flex-shrink-0 py-2 px-4">
                             CHECKOUT
                           </Button>
