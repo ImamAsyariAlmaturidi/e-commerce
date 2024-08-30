@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgresComponent } from "@/components/Progres";
+import { getDataProduct } from "./action";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 type dataJson = {
   createdAt: string;
@@ -30,28 +31,26 @@ const Page = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`${BASE_URL}api/product`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          name: searchQuery || "",
-          skip: String(skip),
-          limit: String(limit),
-        },
-      });
+      // const res = await fetch(`${BASE_URL}/api/product`, {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     name: searchQuery || "",
+      //     skip: String(skip),
+      //     limit: String(limit),
+      //   },
+      // });
+      // if (!res.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
+      // const result = await res.json();
+      const data = await getDataProduct(searchQuery, skip, limit);
 
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const result = await res.json();
-      const fetchedData: dataJson[] = result.data || [];
-      const totalProducts = result.totalProducts || 0;
-
+      const fetchedData: dataJson[] = data.data || [];
+      const totalProducts = data.totalProducts || 0;
       if (fetchedData.length < limit || skip + limit >= totalProducts) {
         setHasMore(false);
       }
-
       setData((prevData) => {
         const existingIds = new Set(prevData.map((item) => item._id));
         const newData = fetchedData.filter(
@@ -59,9 +58,9 @@ const Page = () => {
         );
         return [...prevData, ...newData];
       });
-
       setTotalCount(totalProducts);
       setSkip((prevSkip) => prevSkip + limit);
+      console.log;
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -76,7 +75,7 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchProducts(); // Fetch initial data
+    fetchProducts();
   }, [searchQuery]);
 
   return (

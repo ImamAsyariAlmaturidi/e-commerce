@@ -1,7 +1,7 @@
 import { Db, ObjectId } from "mongodb";
 import { getMongoClientInstance } from "../config/mongo";
 import { z } from "zod";
-import { $ } from "bun";
+
 const DATABASE_NAME = process.env.DATABASE_NAME || "catharsis_db";
 const COLLECTION_WISHLIST = "wishlists";
 

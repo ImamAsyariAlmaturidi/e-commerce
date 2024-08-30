@@ -5,8 +5,9 @@ import {
   createUserWishlist,
   deleteUserWishlistById,
 } from "@/db/models/Wishlist";
-import { never, z } from "zod";
+import { z } from "zod";
 import { ObjectId } from "mongodb";
+
 const userInputSchema = z.object({
   userId: z.string(),
 });
@@ -19,38 +20,51 @@ type MyResponse<T> = {
 };
 
 export async function GET(request: NextRequest) {
-  const data = request.headers.get("x-user-id");
+  const userId = request.headers.get("x-user-id");
 
   try {
-    const parsedData = userInputSchema.safeParse({ userId: data });
+    const parsedData = userInputSchema.safeParse({ userId });
     if (!parsedData.success) {
-      throw parsedData.error;
+      return NextResponse.json<MyResponse<null>>(
+        {
+          statusCode: 400,
+          message: "Invalid user ID",
+          data: null,
+          error: "User ID is required",
+        },
+        { status: 400 }
+      );
     }
+
     const wishlist = await getWishlistByUserId(parsedData.data.userId);
 
     if (!wishlist || wishlist.length === 0) {
-      return NextResponse.json<MyResponse<never>>({
-        statusCode: 404,
-        message: "No wishlist found",
-        data: undefined,
-        error: "hahah",
-      });
+      return NextResponse.json<MyResponse<null>>(
+        {
+          statusCode: 404,
+          message: "No wishlist found",
+          data: null,
+          error: "Wishlist not found",
+        },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json<MyResponse<typeof wishlist>>({
-      statusCode: 200,
-      data: wishlist,
-    });
+    return NextResponse.json<MyResponse<typeof wishlist>>(
+      {
+        statusCode: 200,
+        data: wishlist,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json<MyResponse<never>>(
+    return NextResponse.json<MyResponse<null>>(
       {
         statusCode: 500,
         message: "Internal Server Error",
         error: (error as Error).message,
       },
-      {
-        status: 500,
-      }
+      { status: 500 }
     );
   }
 }
@@ -60,36 +74,52 @@ export async function POST(request: NextRequest) {
     const productId = request.headers.get("productid");
     const userId = request.headers.get("x-user-id");
 
-    const data = {
-      productId,
-      userId,
-    };
-
-    if (!data) {
-      return null;
+    if (!productId || !userId) {
+      return NextResponse.json<MyResponse<null>>(
+        {
+          statusCode: 400,
+          message: "Product ID and User ID are required",
+          data: null,
+          error: "Missing required headers",
+        },
+        { status: 400 }
+      );
     }
+
     const parsedData = userInputSchema.safeParse({ userId });
     if (!parsedData.success) {
-      throw parsedData.error;
+      return NextResponse.json<MyResponse<null>>(
+        {
+          statusCode: 400,
+          message: "Invalid user ID",
+          data: null,
+          error: "User ID is not valid",
+        },
+        { status: 400 }
+      );
     }
-    if (!userId || !productId) {
-      return null;
-    }
+
     const result = await createUserWishlist({
       userId: new ObjectId(userId),
       productId: new ObjectId(productId),
     });
 
-    return NextResponse.json<MyResponse<typeof result>>({
-      statusCode: 201,
-      data: result,
-    });
+    return NextResponse.json<MyResponse<typeof result>>(
+      {
+        statusCode: 201,
+        data: result,
+      },
+      { status: 201 }
+    );
   } catch (error) {
-    return NextResponse.json<MyResponse<never>>({
-      statusCode: 400,
-      message: "Bad Request",
-      error: (error as Error).message,
-    });
+    return NextResponse.json<MyResponse<null>>(
+      {
+        statusCode: 500,
+        message: "Internal Server Error",
+        error: (error as Error).message,
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -98,35 +128,63 @@ export async function DELETE(request: NextRequest) {
     const productId = request.headers.get("productid");
     const userId = request.headers.get("x-user-id");
 
-    const data = {
-      productId,
-      userId,
-    };
-
-    if (!data) {
-      return null;
+    if (!productId || !userId) {
+      return NextResponse.json<MyResponse<null>>(
+        {
+          statusCode: 400,
+          message: "Product ID and User ID are required",
+          data: null,
+          error: "Missing required headers",
+        },
+        { status: 400 }
+      );
     }
+
     const parsedData = userInputSchema.safeParse({ userId });
     if (!parsedData.success) {
-      throw parsedData.error;
+      return NextResponse.json<MyResponse<null>>(
+        {
+          statusCode: 400,
+          message: "Invalid user ID",
+          data: null,
+          error: "User ID is not valid",
+        },
+        { status: 400 }
+      );
     }
-    if (!userId || !productId) {
-      return null;
-    }
+
     const result = await deleteUserWishlistById({
       userId: new ObjectId(userId),
       productId: new ObjectId(productId),
     });
 
-    return NextResponse.json<MyResponse<typeof result>>({
-      statusCode: 201,
-      data: result,
-    });
+    if (!result.deletedCount) {
+      return NextResponse.json<MyResponse<null>>(
+        {
+          statusCode: 404,
+          message: "Item not found",
+          data: null,
+          error: "Item to delete not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json<MyResponse<typeof result>>(
+      {
+        statusCode: 200,
+        data: result,
+      },
+      { status: 200 }
+    );
   } catch (error) {
-    return NextResponse.json<MyResponse<never>>({
-      statusCode: 400,
-      message: "Bad Request",
-      error: (error as Error).message,
-    });
+    return NextResponse.json<MyResponse<null>>(
+      {
+        statusCode: 500,
+        message: "Internal Server Error",
+        error: (error as Error).message,
+      },
+      { status: 500 }
+    );
   }
 }

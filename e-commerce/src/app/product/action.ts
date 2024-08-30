@@ -23,18 +23,26 @@ type WishListType<T> = {
   updatedAt: string;
   products: T[];
 };
-export async function getDataProduct() {
+export async function getDataProduct(
+  searchQuery: string,
+  skip: number,
+  limit: number
+) {
   try {
-    const res = await fetch(`${BASE_URL}api/product`, {
+    const res = await fetch(`${BASE_URL}/api/product`, {
       cache: "no-store",
       method: "GET",
       headers: {
-        Cookie: cookies().toString(),
+        "Content-Type": "application/json",
+        name: searchQuery || "",
+        skip: String(skip),
+        limit: String(limit),
       },
     });
     if (!res.ok) {
-      return redirect("/login");
+      throw new Error("Network response was not ok");
     }
+
     const json = await res.json();
     return json;
   } catch (error) {

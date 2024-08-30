@@ -1,7 +1,11 @@
+// src/app/product/[slug]/page.tsx
+
 import AddWishlist from "@/components/AddWishlist";
-import React, { useEffect, useState } from "react";
 import { Metadata } from "next";
+import React from "react";
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 type ProductType = {
   _id: string;
   createdAt: string;
@@ -48,8 +52,8 @@ export async function generateMetadata({
   };
 }
 
-export const Page = async ({ params }: { params: SlugType }) => {
-  const response = await fetch(`${BASE_URL}api/product/${params.slug}`, {
+const Page = async ({ params }: { params: SlugType }) => {
+  const response = await fetch(`${BASE_URL}/api/product/${params.slug}`, {
     cache: "no-store",
     method: "GET",
     headers: {

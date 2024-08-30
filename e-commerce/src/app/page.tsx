@@ -7,7 +7,10 @@ import { NavbarComponent } from "@/components/Navbar";
 import { getDataProduct } from "./product/action";
 
 const Page = async () => {
-  const { data } = await getDataProduct();
+  const searchQuery: string = "";
+  const skip: number = 0;
+  const limit: number = 8;
+  const { data } = await getDataProduct(searchQuery, skip, limit);
 
   let visible: boolean;
 
