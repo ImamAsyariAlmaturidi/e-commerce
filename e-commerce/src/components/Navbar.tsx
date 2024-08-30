@@ -21,7 +21,7 @@ import { logout } from "@/app/login/action";
 
 export function NavbarComponent({ visible }: { visible: boolean }) {
   return (
-    <div className="fixed w-full ">
+    <div className="fixed w-full z-50">
       <div className="bg-black justify-center items-center flex">
         <h5 className="text-xs text-white font-mono py-4">
           BUY 2, GET 1 FREE ON EVERYTHING! LIMITED TIME!

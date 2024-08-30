@@ -1,6 +1,10 @@
 "use server";
 import { NextRequest, NextResponse } from "next/server";
-import { getProducts, createProduct } from "@/db/models/Product";
+import {
+  getProducts,
+  createProduct,
+  getTotalProductCount,
+} from "@/db/models/Product";
 import { z } from "zod";
 const userInputSchema = z.object({
   name: z.string({
@@ -35,14 +39,21 @@ type MyResponse<T> = {
   message?: string;
   data?: T;
   error?: string;
+  totalProducts: number;
 };
 export async function GET(request: NextRequest) {
   try {
-    const products = await getProducts();
+    const skip = parseInt(request.headers.get("skip") as string, 10) || 0;
+    const limit = parseInt(request.headers.get("limit") as string, 10) || 10;
+
+    const productss = await getProducts(skip, limit);
+    const totalProducts = await getTotalProductCount();
+    // const products = await getProducts();
     return NextResponse.json<MyResponse<unknown>>(
       {
         statusCode: 200,
-        data: products,
+        data: productss,
+        totalProducts,
       },
       {
         status: 200,
@@ -53,6 +64,7 @@ export async function GET(request: NextRequest) {
       {
         statusCode: 500,
         message: "Internal Server Error !",
+        totalProducts: 0,
       },
       {
         status: 500,
@@ -84,6 +96,7 @@ export async function POST(request: NextRequest) {
         {
           statusCode: 400,
           error: `${errPath} - ${errMessage}`,
+          totalProducts: 0,
         },
         {
           status: 400,
@@ -94,6 +107,7 @@ export async function POST(request: NextRequest) {
       {
         statusCode: 500,
         message: "Internal Server Error !",
+        totalProducts: 0,
       },
       {
         status: 500,

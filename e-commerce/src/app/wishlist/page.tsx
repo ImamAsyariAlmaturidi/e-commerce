@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
-
+import Link from "next/link";
 type ProductType = {
   _id: string;
   name: string;
@@ -57,6 +57,7 @@ const Page = async () => {
   return (
     <div>
       <NavbarComponent visible={visible} />
+
       <div className="bg-gray-100 dark:bg-gray-900 pt-32 lg:pt-20 min-h-screen">
         <div className="mx-auto container px-4 md:px-6 2xl:px-0 py-12 flex flex-col items-center">
           <div className="text-center">
@@ -77,28 +78,28 @@ const Page = async () => {
                       key={product._id}
                       className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
                     >
-                      <img
-                        src={product.thumbnail}
-                        alt={product.name}
-                        className="w-full h-48 object-cover object-center"
-                      />
-                      <div className="p-4">
-                        <h2 className="text-lg font-medium text-gray-800 dark:text-white">
-                          {product.name}
-                        </h2>
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                          {product.description}
-                        </p>
-                        <p className="my-4 text-base font-semibold text-gray-800 dark:text-white">
-                          Rp.{product.price}
-                        </p>
-                        <div className="flex">
-                          <Button className="w-full py-2 mx-6 ">
-                            CHECKOUT
-                          </Button>
+                      <Link href={`/product/${product.slug}`}>
+                        <img
+                          src={product.thumbnail}
+                          alt={product.name}
+                          className="w-full h-48 object-cover object-center"
+                        />
+                        <div className="p-4">
+                          <h2 className="text-lg font-medium text-gray-800 dark:text-white">
+                            {product.name}
+                          </h2>
+                          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                            {product.description}
+                          </p>
+                          <p className="my-4 text-base font-semibold text-gray-800 dark:text-white">
+                            Rp.{product.price}
+                          </p>
+                        </div>
+                        <div className="flex justify-around mb-6">
+                          <Button className="w-52 py-2">CHECKOUT</Button>
                           <RemoveWishlist productId={product._id} />
                         </div>
-                      </div>
+                      </Link>
                     </div>
                   ))}
               </>

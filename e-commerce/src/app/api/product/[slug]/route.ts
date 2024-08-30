@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
       return null;
     }
     const product = await searchProductBySlug(slug);
-    console.log(product);
+
     return NextResponse.json({
       message: "success",
       data: product,

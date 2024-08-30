@@ -26,13 +26,23 @@ export const getDb = async () => {
   return db;
 };
 
-export const getProducts = async () => {
+export const getTotalProductCount = async () => {
   const db = await getDb();
 
-  const products = (await db
+  const count = await db.collection(COLLECTION_PRODUCT).countDocuments();
+  return count;
+};
+
+export const getProducts = async (skip: number, limit: number) => {
+  const db = await getDb();
+
+  const products = await db
     .collection(COLLECTION_PRODUCT)
     .find()
-    .toArray()) as ProductModel[];
+    .skip(skip)
+    .limit(limit)
+    .toArray();
+
   return products;
 };
 
