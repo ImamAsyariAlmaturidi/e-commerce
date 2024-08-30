@@ -41,7 +41,7 @@ type WishListType<T> = {
 
 export async function getData() {
   try {
-    const res = await fetch(`${BASE_URL}api/wishlist`, {
+    const res = await fetch(`${BASE_URL}/api/wishlist`, {
       cache: "no-store",
       method: "GET",
       headers: {
@@ -63,7 +63,7 @@ export async function getData() {
 
 export async function addWishlist(productId: string) {
   try {
-    const res = await fetch(`${BASE_URL}api/wishlist`, {
+    const res = await fetch(`${BASE_URL}/api/wishlist`, {
       cache: "no-store",
       method: "POST",
       headers: {
@@ -84,7 +84,7 @@ export async function addWishlist(productId: string) {
 
 export async function deleteWishlist(productId: string) {
   try {
-    await fetch(`${BASE_URL}api/wishlist`, {
+    await fetch(`${BASE_URL}/api/wishlist`, {
       method: "DELETE",
       headers: {
         Cookie: cookies().toString(),

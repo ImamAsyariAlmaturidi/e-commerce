@@ -6,6 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { ProgresComponent } from "@/components/Progres";
 import { getDataProduct } from "./action";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
 type dataJson = {
   createdAt: string;
   description: string;
@@ -32,6 +33,7 @@ const Page = () => {
   const fetchProducts = async () => {
     try {
       // const res = await fetch(`${BASE_URL}/api/product`, {
+      //   cache: "no-store",
       //   method: "GET",
       //   headers: {
       //     "Content-Type": "application/json",
@@ -40,12 +42,8 @@ const Page = () => {
       //     limit: String(limit),
       //   },
       // });
-      // if (!res.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
-      // const result = await res.json();
+      // const data = await res.json();
       const data = await getDataProduct(searchQuery, skip, limit);
-
       const fetchedData: dataJson[] = data.data || [];
       const totalProducts = data.totalProducts || 0;
       if (fetchedData.length < limit || skip + limit >= totalProducts) {

@@ -42,7 +42,6 @@ export async function getDataProduct(
     if (!res.ok) {
       throw new Error("Network response was not ok");
     }
-
     const json = await res.json();
     return json;
   } catch (error) {
