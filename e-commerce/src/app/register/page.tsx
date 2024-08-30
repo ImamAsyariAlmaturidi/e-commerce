@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { NavbarComponent } from "@/components/Navbar";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+import { doRegister } from "./action";
+
 interface FormData {
   firstName?: string;
   lastName?: string;
@@ -20,11 +21,6 @@ interface ApiResponse {
   message: string;
   error: string;
 }
-
-type messageType = {
-  fields: string;
-  message: string;
-};
 
 const Page = () => {
   const router = useRouter();
@@ -44,18 +40,9 @@ const Page = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
     try {
-      console.log(BASE_URL);
-      const res = await fetch(`${BASE_URL}/api/user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const message: ApiResponse = await res.json();
+      const message = await doRegister(formData);
+      console.log(message);
 
       if (message.message === "Validation failed") {
         const parsedErrors = JSON.parse(message.error);

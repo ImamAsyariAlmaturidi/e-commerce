@@ -36,7 +36,6 @@ const Page = () => {
       //   cache: "no-store",
       //   method: "GET",
       //   headers: {
-      //     "Content-Type": "application/json",
       //     name: searchQuery || "",
       //     skip: String(skip),
       //     limit: String(limit),
