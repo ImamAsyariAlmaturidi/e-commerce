@@ -49,12 +49,11 @@ export async function getData() {
       },
     });
 
-    if (!res.ok) {
-      return redirect("/login");
-    }
-
     const json = await res.json();
     const data: WishListType<ProductType>[] = json.data;
+    if (!data) {
+      return [];
+    }
     return data;
   } catch (error) {
     throw error;
@@ -85,6 +84,7 @@ export async function addWishlist(productId: string) {
 export async function deleteWishlist(productId: string) {
   try {
     await fetch(`${BASE_URL}/api/wishlist`, {
+      cache: "no-store",
       method: "DELETE",
       headers: {
         Cookie: cookies().toString(),
@@ -92,6 +92,7 @@ export async function deleteWishlist(productId: string) {
       },
     });
     revalidatePath("/wishlist");
+    redirect("/wishlist");
   } catch (error) {
     throw error;
   }

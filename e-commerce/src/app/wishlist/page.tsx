@@ -18,6 +18,10 @@ const Page = async () => {
   }
   const data = await getData();
 
+  if (data.length < 0) {
+    return <NavbarComponent visible={visible} />;
+  }
+
   if (!data) {
     return <NavbarComponent visible={visible} />;
   }

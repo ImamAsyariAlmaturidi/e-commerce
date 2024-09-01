@@ -74,6 +74,8 @@ export async function POST(request: NextRequest) {
     const productId = request.headers.get("productid");
     const userId = request.headers.get("x-user-id");
 
+    console.log(request.headers);
+
     if (!productId || !userId) {
       return NextResponse.json<MyResponse<null>>(
         {

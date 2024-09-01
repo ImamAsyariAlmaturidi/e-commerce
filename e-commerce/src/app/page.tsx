@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { NavbarComponent } from "@/components/Navbar";
 import { getDataProduct } from "./product/action";
 
-const Page = async () => {
+const Page = async ({ params }: { params: { error: string } }) => {
   const searchQuery: string = "";
   const skip: number = 0;
   const limit: number = 8;
