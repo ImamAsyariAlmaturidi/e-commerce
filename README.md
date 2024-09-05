@@ -1,52 +1,37 @@
-# My eCommerce App
+# Website Overview
 
-## Tujuan Pembelajaran
+This website is built using modern technologies including Next.js, TypeScript, MongoDB, and is deployed on Vercel. It is designed to offer a smooth and responsive user experience. Below are the key features of the website:
 
-- Student mampu membuat aplikasi server dengan menggunakan menggunakan Typescript, NEXT.js dan melakukan proses CRUD dengan database MongoDB
-- Student mampu membuat web aplikasi dengan menggunakan framework NEXT.js
-- Student mampu menghandle navigasi pada NEXT.js
-- Student mampu menghandle authentikasi pada NEXT.js
-- Student mampu mengimplementasikan CSR & SSR pada NEXT.js
+## 1. Wishlist Product
 
-## Aturan Umum
+![Wishlist Product](https://github.com/user-attachments/assets/c2119647-2bf2-4315-bf57-993d46228584)
 
-Challenge Hacktiv8 bersifat latihan WAJIB yang menjunjung tinggi INTEGRITAS. Segala bentuk ketidakjujuran meliputi peniruan, plagiarisme, pemalsuan pengerjaan akan mendapatkan tindakan tegas dari akademik.
+The **Wishlist Product** page allows users to view and manage their list of desired products. Users can add products to their wishlist for future reference, making it easier to track items they wish to purchase later.
 
-Untuk melatih best practice di lapangan kerja, student diharuskan untuk melakukan git commit minimal 1 hari 4 kali dengan message yang deskriptif atau commit message yang sesuai
+## 2. Details Product
 
-## Ringkasan
+![Details Product](https://github.com/user-attachments/assets/fb234159-792d-4a0d-9326-0e565c1e4aac)
 
-My eCommerce App adalah sebuah web aplikasi yang dibangun menguunakan Typescript , framework NEXT.js dan database MongoDB, jadi kerjakan dengan baik sebagai bekal portofolio kamu.
+The **Details Product** page displays detailed information about the selected product. Here, users can view a comprehensive description, technical specifications, and images of the product. This page is designed to provide all the necessary information to make an informed purchasing decision.
 
-Pada challenge ini, kamu diminta untuk membuat aplikasi client-server dengan detail sebagai berikut:
+## 3. Register Page
 
-### Halaman
+![Register Page](https://github.com/user-attachments/assets/2e8371fc-0533-466f-8d10-cd80d439bc4d)
 
-- [ ] Halaman Register
-- [ ] Halaman Login
-- [ ] Halaman Home
-  - [ ] Banner Promo
-  - [ ] Detail info Ecommerce
-  - [ ] Featured Product (5-10 product) + “see-all”
-- [ ] Halaman Product
-- [ ] List Product
-  - [ ] Fitur Search
-  - [ ] Fitur Pagination (menggunakan infinite scroll)
-  - [ ] Fitur Add to wishlist
-- [ ] Halaman Detail Product
-  - [ ] Fitur Add to wishlist
-  - [ ] Implementasi Meta Tag di Head sesuai detail product
-- [ ] Halaman Wishlist Product
-  - [ ] List Wishlist
-  - [ ] Fitur Remove Wishlist
+The **Register Page** allows new users to create an account on the website. Users are required to fill out a form with their personal information to register and gain access to the website’s features.
 
-### Fitur
+## 4. Login Page
 
-- [ ] Fitur register
-- [ ] Fitur login
-- [ ] Fitur show list product
-- [ ] Fitur show detail product
-- [ ] Fitur add to wishlist
-- [ ] Fitur remove wishlist
-- [ ] Fitur search product berdasarkan nama (implement menerapkan debounce)
-- [ ] Fitur pagination (implement infinite scroll)
+![Login Page](https://github.com/user-attachments/assets/711855a4-7384-445a-b898-3c41e113eb8f)
+
+The **Login Page** enables registered users to log into their accounts. Users need to enter their email and password to access their account and utilize the website’s personalized features.
+
+## 5. Landing Page with Search Bar
+
+![Landing Page with Search Bar](https://github.com/user-attachments/assets/792fcd34-67b4-4724-953a-255d145090f8)
+
+The **Landing Page** is the main entry point of the website. It welcomes users upon their first visit and includes a search bar to help users quickly find products or information they are interested in.
+
+## Visit the Website
+
+To explore the website, visit: [ashary-sect.vercel.app](http://ashary-sect.vercel.app)
